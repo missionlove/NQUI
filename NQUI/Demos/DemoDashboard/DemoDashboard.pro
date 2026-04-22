@@ -1,11 +1,15 @@
-QT       += core gui
+QT += core gui widgets charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
+DEFINES += QT_DEPRECATED_WARNINGS
+
+win32: QMAKE_CXXFLAGS += /utf-8
 
 include(../common.pri)
 
+INCLUDEPATH += $$PWD/../../NPlugins/NDashboard
 INCLUDEPATH += $$PWD/../../NPlugins/NFramelessWidget
 
 win32 {
@@ -17,25 +21,20 @@ win32 {
     CONFIG(release, debug|release) {
         NFRAMELESS_LIB_DIR = $$PWD/../../build/libs/$${NFRAMELESS_LIB_ARCH}/release
         NFRAMELESS_LIB_NAME = NFramelessWidget
+        ND_LIB_DIR = $$PWD/../../build/libs/$${NFRAMELESS_LIB_ARCH}/release
+        ND_LIB_NAME = NDashboard
     } else {
         NFRAMELESS_LIB_DIR = $$PWD/../../build/libs/$${NFRAMELESS_LIB_ARCH}/debug
         NFRAMELESS_LIB_NAME = NFramelessWidgetd
+        ND_LIB_DIR = $$PWD/../../build/libs/$${NFRAMELESS_LIB_ARCH}/debug
+        ND_LIB_NAME = NDashboardd
     }
 
     LIBS += -L$${NFRAMELESS_LIB_DIR} -l$${NFRAMELESS_LIB_NAME}
+    LIBS += -L$${ND_LIB_DIR} -l$${ND_LIB_NAME}
     QMAKE_POST_LINK += copy /Y \"$${NFRAMELESS_LIB_DIR}\\$${NFRAMELESS_LIB_NAME}.dll\" \"$${DESTDIR}\\$${NFRAMELESS_LIB_NAME}.dll\"
+    QMAKE_POST_LINK += && copy /Y \"$${ND_LIB_DIR}\\$${ND_LIB_NAME}.dll\" \"$${DESTDIR}\\$${ND_LIB_NAME}.dll\"
 }
-
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
-
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
     main.cpp \
@@ -43,8 +42,3 @@ SOURCES += \
 
 HEADERS += \
     widget.h
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target

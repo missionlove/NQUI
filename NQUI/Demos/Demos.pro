@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    Demo1
+    Demo1 \
+    DemoDashboard

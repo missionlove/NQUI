@@ -1,5 +1,8 @@
 TEMPLATE = subdirs
+CONFIG += ordered
 
 SUBDIRS += \
+    NPlugins \
     Demos \
-    NPlugins
+    NApp
+

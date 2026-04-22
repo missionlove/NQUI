@@ -1,0 +1,12 @@
+#ifndef NDASHBOARD_GLOBAL_H
+#define NDASHBOARD_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(NDASHBOARD_LIBRARY)
+#  define NDASHBOARD_EXPORT Q_DECL_EXPORT
+#else
+#  define NDASHBOARD_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // NDASHBOARD_GLOBAL_H
