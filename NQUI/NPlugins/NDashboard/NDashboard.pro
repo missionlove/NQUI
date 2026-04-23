@@ -1,4 +1,4 @@
-QT += widgets charts
+QT += widgets charts network
 
 TEMPLATE = lib
 DEFINES += NDASHBOARD_LIBRARY
@@ -22,6 +22,8 @@ SOURCES += \
     nuserprofilecompact.cpp \
     ntrendindicator.cpp \
     nmetricsummarycard.cpp \
+    nstockquotecard.cpp \
+    nstockchartpanel.cpp \
     ntimeserieslinechartpanel.cpp \
     ncirculargaugecard.cpp \
     nsparklinemetriccard.cpp \
@@ -42,6 +44,8 @@ HEADERS += \
     nuserprofilecompact.h \
     ntrendindicator.h \
     nmetricsummarycard.h \
+    nstockquotecard.h \
+    nstockchartpanel.h \
     ntimeserieslinechartpanel.h \
     ncirculargaugecard.h \
     nsparklinemetriccard.h \

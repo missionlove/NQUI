@@ -4,6 +4,7 @@
 #include "ndashboardcontentlayout.h"
 #include "nmetricsummarycard.h"
 #include "nnotificationbellbutton.h"
+#include "nstockquotecard.h"
 #include "nsparklinemetriccard.h"
 #include "ntimeserieslinechartpanel.h"
 #include "ntrendindicator.h"
@@ -385,6 +386,7 @@ NAppWindow::NAppWindow(QWidget *parent)
     centerLayout->addWidget(rightCol, 1);
 
     overviewLayout->addWidget(centerRow, 1);
+
     pages->addWidget(overviewPage);
 
     auto makePlaceholderPage = [](const QString &titleText, const QString &hintText) {
@@ -408,7 +410,36 @@ NAppWindow::NAppWindow(QWidget *parent)
         return page;
     };
     pages->addWidget(makePlaceholderPage(tr("Sales"), tr("Sales 页面：可继续接入销售明细、客户转化、订单看板等组件。")));
-    pages->addWidget(makePlaceholderPage(tr("Users"), tr("Users 页面：可继续接入用户画像、留存曲线、活跃分层等组件。")));
+
+    auto *usersPage = new QWidget;
+    auto *usersLayout = new QVBoxLayout(usersPage);
+    usersLayout->setContentsMargins(26, 20, 26, 24);
+    usersLayout->setSpacing(12);
+    auto *usersTitle = new QLabel(tr("股票"));
+    usersTitle->setObjectName(QStringLiteral("NAppOverviewTitle"));
+    auto *usersCard = new QFrame;
+    usersCard->setObjectName(QStringLiteral("NAppBigPanel"));
+    auto *usersCardLayout = new QVBoxLayout(usersCard);
+    usersCardLayout->setContentsMargins(18, 16, 18, 16);
+    usersCardLayout->setSpacing(10);
+
+    auto *stockCard = new NStockQuoteCard;
+    stockCard->setSubscriptions(QStringList()
+                                << QStringLiteral("601288")
+                                << QStringLiteral("600519")
+                                << QStringLiteral("000001"));
+    stockCard->setCurrentSymbol(QStringLiteral("601288"));
+    stockCard->setStockName(QStringLiteral("农业银行"));
+    stockCard->pinSymbol(QStringLiteral("601288"));
+    stockCard->setRefreshIntervalMs(3000);
+    stockCard->setAutoRefresh(true);
+    stockCard->setBackgroundColor(QColor(24, 28, 36));
+    stockCard->setCornerRadius(12);
+    usersCardLayout->addWidget(stockCard, 1);
+    usersLayout->addWidget(usersTitle);
+    usersLayout->addWidget(usersCard, 1);
+    pages->addWidget(usersPage);
+
     pages->addWidget(makePlaceholderPage(tr("Reports"), tr("Reports 页面：可继续接入报表筛选、导出、订阅等模块。")));
 
     navOverview->setChecked(true);
